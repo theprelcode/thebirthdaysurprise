@@ -15,7 +15,7 @@
 }
 
 :root {
-    --bg-gradient: linear-gradient(135deg, #050b14 0%, #101f35 40%, #1d3b5c 75%, #3a759c 100%);
+    --bg-gradient: linear-gradient(135deg, #4a0005 0%, #101f35 40%, #205893 80%, #4eb8ff 100%);
     --btn-color: #00d2ff;
     --btn-shadow: rgba(0, 210, 255, 0.4);
     --envelope-bg: #5c1d1d;
@@ -709,16 +709,16 @@ document.querySelector('.video-flip-card').addEventListener('click', function() 
     const video = document.getElementById('memory-video');
     const backgroundMusic = document.getElementById('birthday-audio');
 
-    // Use a small timeout to let the classList.toggle finish
     setTimeout(() => {
         const isFlipped = this.classList.contains('flipped');
 
         if (isFlipped) {
-            // BACK IS SHOWING: Play the video, Pause the music
             if (backgroundMusic) backgroundMusic.pause();
-            video.play().catch(e => console.log("Autoplay blocked, user must press play on video controls"));
+            
+            // 2. Play the video
+            video.play().catch(e => console.log("Autoplay blocked, click play on video player"));
         } else {
-            // FRONT IS SHOWING: Pause the video, Reset it
+
             video.pause();
             video.currentTime = 0;
         }
