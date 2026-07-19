@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happiest Birthday!</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root {
+    --bg-gradient: linear-gradient(135deg, #050b14 0%, #101f35 40%, #1d3b5c 75%, #3a759c 100%);
+    --btn-color: #00d2ff;
+    --btn-shadow: rgba(0, 210, 255, 0.4);
+    --envelope-bg: #1d3b5c;
+    --envelope-flap: #264e7a;
+    --envelope-inside: #0d1b2a;
+    --accent-glow: #e0f7fa;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background: var(--bg-gradient);
+    background-size:400% 400%;
+    animation:bg 20s ease infinite;
+    overflow:hidden;
+    color:#f5f6fa;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes bg{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+.hero{
+    flex: 1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding: 60px 20px 20px 20px; 
+    position:relative;
+}
+
+.envelope-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    height: 380px;
+    transition: max-width 0.6s ease;
+}
+
+.envelope-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 350px;
+    background-color: var(--envelope-bg);
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+    cursor: pointer;
+    z-index: 20;
+    transition: transform 0.4s ease;
+}
+
+.envelope-wrapper::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-left: 300px solid transparent;
+    border-right: 300px solid transparent;
+    border-top: 185px solid var(--envelope-flap);
+    transform-origin: top;
+    transition: transform 0.5s ease 0.2s, z-index 0.2s ease 0.4s;
+    z-index: 25;
+}
+
+@media (max-width: 640px) {
+    .envelope-container { height: 320px; }
+    .envelope-wrapper { height: 280px; }
+    .envelope-wrapper::before {
+        border-left-width: calc((100vw - 40px) / 2);
+        border-right-width: calc((100vw - 40px) / 2);
+        border-top-width: 145px;
+    }
+}
+
+.envelope-pocket {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-left: 300px solid var(--envelope-inside);
+    border-right: 300px solid var(--envelope-inside);
+    border-top: 175px solid transparent;
+    border-bottom: 175px solid var(--envelope-inside);
+    border-radius: 0 0 15px 15px;
+    z-index: 23;
+}
+
+@media (max-width: 640px) {
+    .envelope-pocket {
+        border-left-width: calc((100vw - 40px) / 2);
+        border-right-width: calc((100vw - 40px) / 2);
+        border-top-width: 145px;
+        border-bottom-width: 145px;
+    }
+}
+
+.letter-card {
+    position: absolute;
+    bottom: 15px;
+    left: 4%;
+    width: 92%;
+    height: 320px;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    z-index: 21;
+    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.1) 0.6s, 
+                height 0.6s ease 1.4s, 
+                bottom 0.6s ease 1.4s, 
+                left 0.6s ease 1.4s, 
+                width 0.6s ease 1.4s;
+    padding: 15px;
+    box-shadow: inset 0 0 30px rgba(255,255,255,0.05), 0 10px 20px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.preview-intent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+.preview-intent h3 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.envelope-container.open .envelope-wrapper::before {
+    transform: rotateX(180deg);
+    z-index: 19;
+}
+
+@media (min-width: 1025px) {
+    .envelope-container.open {
+        max-width: 1050px;
+    }
+    .envelope-container.open .letter-card {
+        transform: translateY(20px);
+        z-index: 30;
+        height: 590px;
+        bottom: -100px;
+        left: -40px;
+        width: 110%;
+        padding: 10px 30px 10px 30px;
+    }
+    .content-layout {
+        display: grid;
+        grid-template-columns: 1.2fr 0.9fr;
+        gap: 40px;
+        height: 100%;
+        width: 100%;
+        align-items: start;
+    }
+    .left-column {
+        overflow-y: auto;
+        height: 100%;
+        padding-right: 15px;
+        scrollbar-width: none;
+    }
+    .left-column::-webkit-scrollbar { display: none; }
+    
+    .right-column {
+        overflow-y: auto;
+        height: 100%;
+        scrollbar-width: none;
+        padding: 10px;
+    }
+    .right-column::-webkit-scrollbar { display: none; }
+}
+
+@media (max-width: 1024px) {
+    body { overflow-y: auto; height: auto; }
+    .hero { min-height: 100vh; padding: 100px 20px 60px 20px; }
+    .envelope-container.open .letter-card {
+        transform: translateY(-160px);
+        z-index: 30;
+        height: auto;
+        min-height: 450px;
+        bottom: -220px;
+        padding-bottom: 15px;
+        overflow-y: visible;
+    }
+    .content-layout { display: flex; flex-direction: column; }
+}
+
+.fade-in-element {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.fade-in-element.reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+h1{
+    font-family:'Dancing Script',cursive;
+    font-size: clamp(34px, 5vw, 46px);
+    margin-top: 0; 
+    margin-bottom: 8px;
+    text-shadow:0 0 20px rgba(255,255,255,.4);
+    text-align: center;
+}
+
+h2{
+    font-size: clamp(18px, 3.5vw, 22px);
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.intro-p {
+    line-height: 1.5;
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #e2e8f0;
+    text-align: center;
+}
+
+.hidden-content {
+    display: none;
+    width: 100%;
+}
+
+.love-letter-text {
+    font-family: 'Dancing Script', cursive;
+    font-size: clamp(20px, 4vw, 25px);
+    color: var(--accent-glow);
+    line-height: 1.4;
+    text-align: justify; 
+    white-space: pre-line; 
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 12px;
+}
+
+.media-section {
+    width: 100%;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; 
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.15);
+}
+
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.photo-gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-top: 10px;
+    perspective: 1000px;
+}
+
+.flip-card {
+    width: 100%;
+    height: 120px;
+    cursor: pointer;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.flip-card.flipped {
+    transform: rotateY(180deg);
+}
+
+/* Front and Back faces */
+.flip-front, .flip-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+}
+
+.flip-front {
+    background: var(--envelope-inside);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.flip-back {
+    transform: rotateY(180deg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+}
+
+.photo-item {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.3);
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.photo-item:hover {
+    transform: scale(1.05);
+    border-color: var(--btn-color);
+    box-shadow: 0 0px 15px 2px rgba(0, 210, 255, 0.3);
+}
+
+.heart{
+    position:fixed;
+    color:#fff;
+    animation:float linear infinite;
+    opacity:.3;
+    pointer-events:none;
+    z-index: 1;
+}
+
+@keyframes float{
+    from{transform:translateY(105vh) scale(.5);}
+    to{transform:translateY(-20vh) scale(1.4);}
+}
+
+.confetti {
+    position: fixed;
+    pointer-events: none;
+    z-index: 40;
+    will-change: transform, opacity;
+}
+
+footer{
+    text-align:center;
+    padding: 15px;
+    font-size:11px;
+    opacity:.5;
+    position: relative;
+    z-index: 10;
+}
+
+.video-flip-card {
+    width: 100%;
+    position: relative;
+    cursor: pointer;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 15px;
+}
+
+.video-flip-card.flipped {
+    transform: rotateY(180deg);
+}
+
+.video-flip-card:not(.flipped) .video-back video {
+    pointer-events: none;
+}
+
+.video-front, .video-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    backface-visibility: hidden;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.video-front {
+    height: 225px; /* Matches the approximate height of your 16:9 video */
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 2;
+}
+
+.video-back {
+    transform: rotateY(180deg);
+    position: relative; /* Needs to be relative to show the video */
+}
+
+/* This overrides the default wrapper margin to keep it clean */
+.video-back .video-wrapper {
+    margin-bottom: 0;
+    border: none;
+}
+
+.video-flip-card:not(.flipped) .video-back {
+    pointer-events: none;
+}
+</style>
+
+</head>
+<body>
+
+<audio id="birthday-audio" loop preload="auto">
+    <source src="https://files.catbox.moe/r0bskm.mp3" type="audio/mp3">
+</audio>
+
+<div class="hero">
+    <div id="envelope-container" class="envelope-container">
+        <div class="envelope-wrapper" onclick="openEnvelope()">
+            <div class="envelope-pocket"></div>
+        </div>
+
+        <div id="letter-card" class="letter-card">
+            <div id="preview-view" class="preview-intent" onclick="openEnvelope()">
+                <h3>You Have a Letter 💌</h3>
+                <p style="font-size: 13px; opacity: 0.8;">Click Envelope to Open</p>
+            </div>
+
+            <div id="main-content-view" style="display: none; width: 100%; height: 100%;">
+                <div class="content-layout">
+                    
+                    <div class="left-column">
+                        <h1 id="header-title" class="fade-in-element">Happiest Birthday</h1>
+                        <h2 id="header-subtitle" class="fade-in-element">My Dearest <span id="birthday-name" style="color: var(--accent-glow);">❤️ My Love ❤️</span></h2>
+
+                        <p id="intro-text" class="intro-p fade-in-element">
+                            Today is more than just your birthday...
+                            It's the day the world was blessed with the most beautiful soul.
+                            Every smile of yours brightens my life,
+                            every laugh becomes my favorite melody,
+                            and every moment with you is my greatest gift.
+                        </p>
+
+                        <div id="letter-running-zone" class="hidden-content">
+                            <p id="typing-text" class="love-letter-text"></p>
+                            <h2 id="signature" style="display: none; margin-top: 15px; text-align: center;">🌹 Forever Yours, Love You More🌹</h2>
+                        </div>
+                    </div>
+
+                    <div class="right-column">
+                        <div id="media-block" class="media-section" style="display: none;">
+                            <div class="video-flip-card" onclick="this.classList.toggle('flipped')">
+    <!-- Front Face -->
+    <div class="video-front">
+        <span>▶️ Click to Watch</span>
+    </div>
+    <!-- Back Face -->
+    <div class="video-back">
+        <div class="video-wrapper">
+            <video id="memory-video" controls playsinline poster="https://via.placeholder.com/800x450/201015/ffffff?text=Our+Memories+❤️">
+                <source src="https://files.catbox.moe/nrl6an.MP4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+</div>
+                            
+                            <h3 style="font-size: 15px; margin-bottom: 5px; text-align: center;">Beautiful Memories 📸</h3>
+                            <div class="photo-gallery">
+			    	    <div class="flip-card" onclick="this.classList.toggle('flipped')">
+			            <div class="flip-front">🎁</div>
+			            <div class="flip-back" style="background-image: url('https://lh3.googleusercontent.com/d/11-1yfTjfkkMcbc3b_PCPuuxpGSL9uylE'); background-size: cover; 					background-position: 50% 70%;"></div>
+			                </div>
+			                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+			                    <div class="flip-front">✨</div>
+			                    <div class="flip-back" style="background-image: url('https://lh3.googleusercontent.com/d/1hB3iJE3fwxWbHuTXGF843YGQGrmwb264');"></div>
+			                </div>
+			                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+    						<div class="flip-front">💖</div>
+    						<div class="flip-back" style="background-image: url('https://lh3.googleusercontent.com/d/1zpbZj01WEAFpYxwxqAsqaEd2OTOJwcPP'); background-							size: cover; background-position: 50% 20%;"></div>
+					</div>
+			                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+			                    <div class="flip-front">💌</div>
+			                    <div class="flip-back" style="background-image: url('https://lh3.googleusercontent.com/d/1eHwJ2xeEMRgraq5JYSp8BQrDCKjR5cWC'); background-size: 						130%; background-position: 20% 45%;"></div>
+			                </div>
+			                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+			                    <div class="flip-front">🌹</div>
+			                    <div class="flip-back" style="background-image: url('https://lh3.googleusercontent.com/d/1l3-LMqdC1rOhesKv-HxndR2-T26Q-_5C'); background-							position: 50% 30%;"></div>
+			                </div>
+			                <div class="flip-card" onclick="this.classList.toggle('flipped')">
+			                    <div class="flip-front">💝</div>
+			                    <div class="flip-back" style="background-image: url('https://lh3.googleusercontent.com/d/1ar7BrHdEJ_DJArcyzQoi5BanGK4zTU4t'); background-size: 						250%; background-position: 40% 30%;">
+						</div>
+					</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    Made with ❤️ Just for You
+</footer>
+
+<script>
+const urlParams = new URLSearchParams(window.location.search);
+const mainName = urlParams.get('name') || "Khushu";
+document.getElementById('birthday-name').innerHTML = `❤️ ${mainName} ❤️`;
+
+const letterParagraph = "My love,\nYou are my sunshine, my peace, my happiness, and the most beautiful chapter of my life. I wish your heart stays full of joy, your dreams come true, and I get to celebrate every birthday beside you. No matter where life takes us, I promise to keep loving you more with each passing day.\n\nHappy Birthday,Sweet❤️";
+
+function openEnvelope() {
+    const container = document.getElementById("envelope-container");
+    if(container.classList.contains("open")) return;
+    
+    container.classList.add("open");
+    
+    const audio = document.getElementById("birthday-audio");
+    if (audio) {
+        audio.play().catch(error => {
+            console.log("Audio contextual playback blocked: ", error);
+        });
+    }
+
+    setTimeout(() => {
+        document.getElementById("preview-view").style.display = "none";
+        document.getElementById("main-content-view").style.display = "block";
+        
+        setTimeout(() => {
+            document.getElementById("header-title").classList.add("reveal");
+            document.getElementById("header-subtitle").classList.add("reveal");
+        }, 100);
+
+        setTimeout(() => {
+            document.getElementById("intro-text").classList.add("reveal");
+        }, 600);
+        
+        setTimeout(() => {
+            revealLetterText();
+        }, 1800);
+    }, 800);
+}
+
+function revealLetterText() {
+    document.getElementById("letter-running-zone").style.display = "block";
+    
+    let i = 0;
+    const speed = 40; 
+    const textContainer = document.getElementById("typing-text");
+    
+    function typeWriter() {
+        if (i < letterParagraph.length) {
+            if (letterParagraph.substring(i, i+2) === '\n\n') {
+                textContainer.innerHTML += '<br><br>';
+                i += 2;
+            } else if (letterParagraph.charAt(i) === '\n') {
+                textContainer.innerHTML += '<br>';
+                i++;
+            } else {
+                textContainer.innerHTML += letterParagraph.charAt(i);
+                i++;
+            }
+            
+            const leftCol = document.querySelector(".left-column");
+            if(leftCol) leftCol.scrollTop = leftCol.scrollHeight;
+            
+            setTimeout(typeWriter, speed);
+        } else {
+            document.getElementById("signature").style.display = "block";
+            document.getElementById("media-block").style.display = "block";
+            
+            const userVideo = document.getElementById("memory-video");
+            const backgroundMusic = document.getElementById("birthday-audio");
+
+            if (userVideo && backgroundMusic) {
+                // When video plays, pause the music
+                userVideo.addEventListener('play', () => {
+                    backgroundMusic.pause();
+                });
+
+                // When video pauses, DO NOT auto-play music. 
+                // Only wait for user manual input.
+                userVideo.addEventListener('pause', () => {
+                    console.log("Video paused. Music remains OFF until manually resumed.");
+                });
+
+                // When video ends, DO NOT auto-play music.
+                userVideo.addEventListener('ended', () => {
+                    console.log("Video ended. Music remains OFF until manually resumed.");
+                });
+            }
+            
+            const rect = document.getElementById("letter-card").getBoundingClientRect();
+            createSlowConfettiExplosion(window.innerWidth / 2, rect.top + 100);
+        }
+    }
+    typeWriter();
+}
+
+function hearts(){
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML=["❤","💖","💕","💗","💝","💘"][Math.floor(Math.random()*6)];
+    heart.style.left=Math.random()*95+"vw"; 
+    heart.style.fontSize=(14+Math.random()*20)+"px";
+    heart.style.animationDuration=(12+Math.random()*12)+"s"; 
+    document.body.appendChild(heart);
+    setTimeout(()=>{ heart.remove(); },25000);
+}
+setInterval(hearts, 500);
+
+function createSlowConfettiExplosion(startX, startY) {
+    const particles = 40; 
+    const pool = ["✨", "✨", "💖", "🎉", "🌸", "✨", "❤️"];
+    
+    for (let i = 0; i < particles; i++) {
+        const p = document.createElement("div");
+        p.className = "confetti";
+        p.innerHTML = pool[Math.floor(Math.random() * pool.length)];
+        p.style.left = startX + "px";
+        p.style.top = startY + "px";
+        p.style.fontSize = (14 + Math.random() * 16) + "px";
+        
+        document.body.appendChild(p);
+        
+        let posX = startX;
+        let posY = startY;
+        
+        let speedX = (Math.random() - 0.5) * 8; 
+        let speedY = (Math.random() * -6) - 3;   
+        const gravity = 0.08;                    
+        
+        let angle = Math.random() * 360;
+        let spinSpeed = (Math.random() - 0.5) * 2; 
+        let opacity = 1;
+
+        function updateParticle() {
+            speedY += gravity;
+            posX += speedX;
+            posY += speedY;
+            angle += spinSpeed;
+            opacity -= 0.006; 
+            
+            p.style.transform = `translate(${posX - startX}px, ${posY - startY}px) rotate(${angle}deg)`;
+            p.style.opacity = opacity;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(updateParticle);
+            } else {
+                p.remove();
+            }
+        }
+        requestAnimationFrame(updateParticle);
+    }
+}
+function toggleAudio() {
+    const audio = document.getElementById("birthday-audio");
+    const btn = document.getElementById("audio-control");
+    
+    if (audio.paused) {
+        audio.play();
+        btn.innerHTML = "🎵 Music: ON";
+    } else {
+        audio.pause();
+        btn.innerHTML = "🔇 Music: OFF";
+    }
+}
+document.querySelector('.video-flip-card').addEventListener('click', function() {
+    const video = document.getElementById('memory-video');
+    const backgroundMusic = document.getElementById('birthday-audio');
+
+    // Use a small timeout to let the classList.toggle finish
+    setTimeout(() => {
+        const isFlipped = this.classList.contains('flipped');
+
+        if (isFlipped) {
+            // BACK IS SHOWING: Play the video, Pause the music
+            if (backgroundMusic) backgroundMusic.pause();
+            video.play().catch(e => console.log("Autoplay blocked, user must press play on video controls"));
+        } else {
+            // FRONT IS SHOWING: Pause the video, Reset it
+            video.pause();
+            video.currentTime = 0;
+        }
+    }, 50);
+});
+</script>
+<button id="audio-control" onclick="toggleAudio()" style="position: fixed; bottom: 20px; left: 20px; z-index: 1000; padding: 10px 15px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); background: rgba(0,0,0,0.4); color: white; cursor: pointer; font-family: 'Poppins', sans-serif; font-size: 12px; backdrop-filter: blur(5px);">
+    🎵 Music: ON
+</button>
+</body>
+</html>
