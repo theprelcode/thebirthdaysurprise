@@ -708,20 +708,22 @@ function toggleAudio() {
 document.querySelector('.video-flip-card').addEventListener('click', function() {
     const video = document.getElementById('memory-video');
     const backgroundMusic = document.getElementById('birthday-audio');
+    const audioBtn = document.getElementById("audio-control");
 
     setTimeout(() => {
         const isFlipped = this.classList.contains('flipped');
 
         if (isFlipped) {
-            if (backgroundMusic) backgroundMusic.pause();
+            if (backgroundMusic && !backgroundMusic.paused) {
+                backgroundMusic.pause();
+                if (audioBtn) audioBtn.innerHTML = "🔇 Music: OFF";
+            }
             
-            // 2. Play the video
-            video.play().catch(e => console.log("Autoplay blocked, click play on video player"));
+            video.play().catch(e => console.log("User interaction required for video playback"));
         } else {
-
             video.pause();
             video.currentTime = 0;
-        }
+                    }
     }, 50);
 });
 </script>
